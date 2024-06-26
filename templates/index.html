@@ -6,6 +6,16 @@
     <title>License Checker</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .markdown-content {
+            border: 1px solid #ced4da;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            white-space: pre-wrap;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -17,8 +27,14 @@
             </div>
             <button type="submit" class="btn btn-primary">Check License</button>
         </form>
-        <div id="result" class="mt-4"></div>
-        <div id="licenseContent" class="mt-4"></div>
+        <div id="result" class="mt-4">
+            <h2>Analysis Result:</h2>
+            <div id="resultText" class="markdown-content"></div>
+        </div>
+        <div id="licenseContent" class="mt-4">
+            <h2>License Content:</h2>
+            <div id="licenseText" class="markdown-content"></div>
+        </div>
     </div>
     <script>
         $(document).ready(function() {
@@ -31,11 +47,11 @@
                     contentType: 'application/json',
                     data: JSON.stringify({ repo_url: repoUrl }),
                     success: function(response) {
-                        $('#result').html('<h2>Analysis Result:</h2><pre>' + response.result + '</pre>');
-                        $('#licenseContent').html('<h2>License Content:</h2><pre>' + response.license_content + '</pre>');
+                        $('#resultText').html(marked.marked(response.result));
+                        $('#licenseText').html(marked.marked(response.license_content));
                     },
                     error: function(error) {
-                        $('#result').html('<h2>Error:</h2><pre>' + error.responseText + '</pre>');
+                        $('#resultText').html('Error: ' + error.responseText);
                     }
                 });
             });

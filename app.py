@@ -4,7 +4,7 @@ import git
 import os
 
 # Set your OpenAI API key
-openai.api_key = 'YOUR_OPENAI_KEY'
+openai.api_key = 'YOUR OPENAI API KEY'
 
 app = Flask(__name__)
 
@@ -38,8 +38,10 @@ def check_license_for_commercial_use_and_drug_discovery(repo_url):
     {license_content}
     
     Provide the answer in the following format:
-    1. Commercial Use: Yes/No
-    2. Drug Discovery: Yes/No
+    1. ** Commercial Use **: Yes/No
+       ** Reasoning **: [Concisely explain why or why not]
+    2. ** Drug Discovery **: Yes/No
+       ** Reasoning **: [Concisely explain why or why not]
     """
 
     response = openai.chat.completions.create(
