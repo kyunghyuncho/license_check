@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License Checker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Git Repository License Checker</h1>
+        <form id="licenseForm">
+            <div class="form-group">
+                <label for="repo_url">Git Repository URL</label>
+                <input type="url" class="form-control" id="repo_url" name="repo_url" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Check License</button>
+        </form>
+        <div id="result" class="mt-4"></div>
+        <div id="licenseContent" class="mt-4"></div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#licenseForm').on('submit', function(e) {
+                e.preventDefault();
+                const repoUrl = $('#repo_url').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/check_license',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ repo_url: repoUrl }),
+                    success: function(response) {
+                        $('#result').html('<h2>Analysis Result:</h2><pre>' + response.result + '</pre>');
+                        $('#licenseContent').html('<h2>License Content:</h2><pre>' + response.license_content + '</pre>');
+                    },
+                    error: function(error) {
+                        $('#result').html('<h2>Error:</h2><pre>' + error.responseText + '</pre>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
